@@ -29,7 +29,8 @@ const buildControls = (props) => (
 
         <button style={buttonStyling} 
                 className={classes.OrderButton}
-                disabled={props.disabledOrder}>order now</button>
+                disabled={props.disabledOrder}
+                onClick={props.openModal}>order now</button>
     </div>
 );
 export default buildControls;

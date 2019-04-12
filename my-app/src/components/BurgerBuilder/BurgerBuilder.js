@@ -20,7 +20,8 @@ class BurgerBuilder extends Component {
             meat: 1
         },
         totalPrice: 6,
-        isOrder: false
+        isOrder: false,
+        isModal: false
     }
 
     addIngredientHandler = (type) => {
@@ -69,6 +70,11 @@ class BurgerBuilder extends Component {
         console.log('isworking',ingredients_sum)
     }
     
+    modalHandler = () => {
+        this.setState({isModal: true});
+        console.log('open modal handler')
+    }
+
     render() {
         const disabledButtons = {
             ...this.state.ingredients
@@ -78,7 +84,7 @@ class BurgerBuilder extends Component {
         }
         return (
             <Auxialuary>
-                <Modal>
+                <Modal show={this.state.isModal}>
                     <OrderSummary ingredients={this.state.ingredients}/>
                 </Modal>
                <Burger ingredients={this.state.ingredients}/>
@@ -89,7 +95,9 @@ class BurgerBuilder extends Component {
                     //disabled controls
                     disabledInfo={disabledButtons}
                     //disabled ordernow button  
-                    disabledOrder={this.state.isOrder}/>
+                    disabledOrder={this.state.isOrder}
+                    //open modal component
+                    openModal={this.modalHandler}/>
             </Auxialuary>
         );
     }
