@@ -3,7 +3,9 @@ import Auxialuary from '../../hoc/auxuilary/Auxialury'
 import Burger from  '../Burger.js/Burger';
 import BuildControls from '../../components/Burger.js/BuildControls/BuildControls';
 import Modal from '../UI-parts/Modal/Modal';
-import OrderSummary from '../Burger.js/OrderSummary/OrderSummary'
+import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
+
+
 const INGREDIENTS_PRICES = {
     salad: 0.5,
     bacon: 2,
@@ -12,6 +14,10 @@ const INGREDIENTS_PRICES = {
 };
 
 class BurgerBuilder extends Component {
+    constructor(props){
+        super(props);
+        this.myRef = React.createRef();
+    }
     state = {
         ingredients: {
             salad: 1,
@@ -72,13 +78,17 @@ class BurgerBuilder extends Component {
     
     modalHandler = () => {
         this.setState({isModal: true});
-        console.log('open modal handler')
+        const height = this.myRef.current.clientHeight;
+        console.log('height', height);
     }
-
+    componentDidMount() {
+        
+    }
     render() {
         const disabledButtons = {
             ...this.state.ingredients
         }
+        
         for (let key in disabledButtons) {
             disabledButtons[key] = disabledButtons[key] <=0;
         }
@@ -87,7 +97,9 @@ class BurgerBuilder extends Component {
                 <Modal show={this.state.isModal}>
                     <OrderSummary ingredients={this.state.ingredients}/>
                 </Modal>
-               <Burger ingredients={this.state.ingredients}/>
+                <div ref={this.myRef}>
+                    <Burger ingredients={this.state.ingredients}/> 
+                </div>
                <BuildControls
                     totalPrice={this.state.totalPrice} 
                     addIngredient={this.addIngredientHandler}
