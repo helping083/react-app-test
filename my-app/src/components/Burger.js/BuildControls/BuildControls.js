@@ -8,9 +8,12 @@ const controls = [
     {label: 'Cheese', type: 'cheese'},
     {label: 'Meat', type: 'meat'}
 ];
- 
+const buttonStyling = {
+    textTransform: 'Uppercase'
+};
 const buildControls = (props) => (
     <div className={classes.BuildControls}>
+        <p>Current price: {props.totalPrice}$</p>
         {controls.map((item)=>{
             return <BuildControl 
                         addIngredientHandler = {() => props.addIngredient(item.type)}
@@ -19,6 +22,9 @@ const buildControls = (props) => (
                         label={item.label}
                         disabled={props.disabledInfo[item.type]}/>
         })}
+        <button style={buttonStyling} 
+                className={classes.OrderButton}
+                disabled={props.disabledOrder}>order now</button>
     </div>
 );
 export default buildControls;

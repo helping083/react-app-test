@@ -18,10 +18,12 @@ class BurgerBuilder extends Component {
             cheese: 1,
             meat: 1
         },
-        totalPrice: 4
+        totalPrice: 6,
+        isOrder: false
     }
 
     addIngredientHandler = (type) => {
+       
         const oldIngredient = this.state.ingredients[type];
         const updatedIngr = oldIngredient + 1;
         const updatedIngredients = {
@@ -32,8 +34,10 @@ class BurgerBuilder extends Component {
         const oldPrice = this.state.totalPrice;
         const newPrice = oldPrice+totalPrice;
         this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+        this.isOrderHandler(updatedIngredients);
     }
     removeIngredientHandler = (type) => {
+        
         const oldIngredient = this.state.ingredients[type];
         if (oldIngredient <=0 ) {
             return;
@@ -47,7 +51,23 @@ class BurgerBuilder extends Component {
         const oldPrice = this.state.totalPrice;
         const newPrice = oldPrice - totalPrice;
         this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+        this.isOrderHandler(updatedIngredients);
     }
+    isOrderHandler = (ingredients) => {
+        //get ing values
+        let ingredients_values = Object.values(ingredients);
+        //sum of ing values
+        let ingredients_sum = ingredients_values.reduce((prev,curr)=>{
+            return prev+curr;
+        },0);
+        if (ingredients_sum === 0) {
+            this.setState({isOrder: true})
+        } else {
+            this.setState({isOrder: false})
+        }
+        console.log('isworking',ingredients_sum)
+    }
+    
     render() {
         const disabledButtons = {
             ...this.state.ingredients
@@ -58,10 +78,12 @@ class BurgerBuilder extends Component {
         return (
             <Auxialuary>
                <Burger ingredients={this.state.ingredients}/>
-               <BuildControls 
+               <BuildControls
+                    totalPrice={this.state.totalPrice} 
                     addIngredient={this.addIngredientHandler}
                     removeIngredient={this.removeIngredientHandler}
-                    disabledInfo={disabledButtons}/>
+                    disabledInfo={disabledButtons}
+                    disabledOrder={this.state.isOrder}/>
             </Auxialuary>
         );
     }
