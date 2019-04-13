@@ -81,7 +81,17 @@ class BurgerBuilder extends Component {
         const height = this.myRef.current.clientHeight;
         console.log('height', height);
     }
- 
+    
+    closeModalHandler = () => {
+        this.setState({isModal:false});
+    }
+    cancelButtonHandler = ()=>{
+
+
+    }
+    continueButtonHandler = () => {
+
+    }
     render() {
         const disabledButtons = {
             ...this.state.ingredients
@@ -92,8 +102,16 @@ class BurgerBuilder extends Component {
         }
         return (
             <Auxialuary>
-                <Modal show={this.state.isModal}>
-                    <OrderSummary ingredients={this.state.ingredients}/>
+                <Modal 
+                  show={this.state.isModal}
+                  modalCLosedHandler={this.closeModalHandler}
+                    >
+                    <OrderSummary 
+                      ingredients={this.state.ingredients} 
+                      closeModal={this.closeModalHandler}
+                      cancelButtonHandler={this.closeModalHandler}
+                      totalPrice={this.state.totalPrice}
+                      continueButtonHandler = {this.continueButtonHandler}/>
                 </Modal>
                 <div ref={this.myRef}>
                     <Burger ingredients={this.state.ingredients}/> 

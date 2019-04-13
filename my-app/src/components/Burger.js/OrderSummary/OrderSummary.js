@@ -1,6 +1,8 @@
 import React from 'react';
 import Auxialiry from '../../../hoc/auxuilary/Auxialury';
 import classes from './OrderSummary.css';
+import Button from '../../UI-parts/Button/Button';
+
 const spanStyle = {
     textTransform: 'Uppercase'
 }
@@ -20,7 +22,14 @@ const orderSumarry = (props) => {
             <ul>
                 {ingsSum}
             </ul>
-            <span className={classes.SpanClass}>x</span>
+            <p>Total price: {props.totalPrice}$</p>
+            <span className={classes.SpanClass} onClick={props.closeModal}>x</span>
+            <Button 
+              btnType="Danger"
+              clicked={props.cancelButtonHandler}>cancel</Button>
+            <Button 
+              btnType="Success"
+              clicked={props.continueButtonHandler}>continue</Button>
         </Auxialiry>
     );
 };
