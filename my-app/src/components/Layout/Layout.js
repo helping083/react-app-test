@@ -1,12 +1,10 @@
 import React from 'react'
 import Auxialury from '../../hoc/auxuilary/Auxialury';
 import classes from './Layount.css';
-
+import Toolbar from '../../components/Navigation/TollBar/Toolbar';
 const Layout = (props) => (
  <Auxialury>
-    <div>
-      toolbar,sidebar,navbar
-    </div>
+    <Toolbar/>
     <main className={classes.Content}>
       {props.children}
     </main>
