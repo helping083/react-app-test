@@ -1,6 +1,6 @@
 import React from 'react';
 import Auxialiry from '../../../hoc/auxuilary/Auxialury';
-
+import classes from './OrderSummary.css';
 const spanStyle = {
     textTransform: 'Uppercase'
 }
@@ -20,6 +20,7 @@ const orderSumarry = (props) => {
             <ul>
                 {ingsSum}
             </ul>
+            <span className={classes.SpanClass}>x</span>
         </Auxialiry>
     );
 };

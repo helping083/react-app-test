@@ -81,9 +81,7 @@ class BurgerBuilder extends Component {
         const height = this.myRef.current.clientHeight;
         console.log('height', height);
     }
-    componentDidMount() {
-        
-    }
+ 
     render() {
         const disabledButtons = {
             ...this.state.ingredients
