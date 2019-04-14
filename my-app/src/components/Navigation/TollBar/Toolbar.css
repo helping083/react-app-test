@@ -16,3 +16,15 @@
     height: 100%;
     
 }
+.LogoStyling {
+    height: 80%;
+    position: relative;
+    left: 6%;
+    margin-top: 5px;
+}
+
+@media (max-width: 499px) {
+    .DesktopOnly {
+        display: none;
+    }
+}
