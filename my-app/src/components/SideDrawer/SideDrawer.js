@@ -6,11 +6,9 @@ import Backdrop from '../UI-parts/Backdrop/Backdrop'
 import Auxialury from '../../hoc/auxuilary/Auxialury';
 
 const sideDrawer = (props) => {
-    const attachedClasses =  [classes.SideDrawer, classes.Close];
+    let attachedClasses =  [classes.SideDrawer, classes.Close];
     if(props.open) {
-        attachedClasses[1] = classes.Open;
-    } else {
-        attachedClasses[1] = classes.Close;
+      attachedClasses = [classes.SideDrawer, classes.Open];
     }
     return (
       <Auxialury>
