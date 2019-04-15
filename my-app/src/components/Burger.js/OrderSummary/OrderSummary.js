@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Auxialiry from '../../../hoc/auxuilary/Auxialury';
 import classes from './OrderSummary.css';
 import Button from '../../UI-parts/Button/Button';
@@ -7,14 +7,22 @@ const spanStyle = {
     textTransform: 'Uppercase'
 }
 
-const orderSumarry = (props) => {
-    const ingsSum  = Object.keys(props.ingredients)
-        .map((item)=>{
-            return (<li key={item}>
-                     <span style={spanStyle}>{item}:</span> {props.ingredients[item]}
-                   </li>
-            );
-        });
+class OrderSumarry extends Component {
+  constructor(props){
+      super(props);
+  }  
+  componentWillUpdate() {
+      console.log('order summary will update')
+  }
+  render() {
+    const ingsSum  = Object.keys(this.props.ingredients)
+    .map((item)=>{
+        return (
+            <li key={item}>
+                 <span style={spanStyle}>{item}:</span> {this.props.ingredients[item]}
+            </li>
+        );
+    });
     return (
         <Auxialiry>
             <h3>Your order</h3>
@@ -22,16 +30,17 @@ const orderSumarry = (props) => {
             <ul>
                 {ingsSum}
             </ul>
-            <p>Total price: {props.totalPrice}$</p>
-            <span className={classes.SpanClass} onClick={props.closeModal}>x</span>
+            <p>Total price: {this.props.totalPrice}$</p>
+            <span className={classes.SpanClass} onClick={this.props.closeModal}>x</span>
             <Button 
               btnType="Danger"
-              clicked={props.cancelButtonHandler}>cancel</Button>
+              clicked={this.props.cancelButtonHandler}>cancel</Button>
             <Button 
               btnType="Success"
-              clicked={props.continueButtonHandler}>continue</Button>
+              clicked={this.props.continueButtonHandler}>continue</Button>
         </Auxialiry>
     );
-};
+  }
+}  
 
-export default orderSumarry;
+export default OrderSumarry;
