@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger.js/BuildControls/BuildControl
 import Modal from '../UI-parts/Modal/Modal';
 import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
 import axios from '../../utils/axios-orders';
+import Spinner from '../UI-parts/Spinner/Spinner';
 
 const INGREDIENTS_PRICES = {
     salad: 0.5,
@@ -28,7 +29,7 @@ class BurgerBuilder extends Component {
         totalPrice: 6,
         isOrder: false,
         isModal: false,
-        users: []
+        loading: false
     }
 
     componentDidMount() {
@@ -93,6 +94,7 @@ class BurgerBuilder extends Component {
 
     }
     continueButtonHandler = () => {
+        this.setState({loading: true})
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
@@ -109,11 +111,13 @@ class BurgerBuilder extends Component {
         axios.post('/orders.json', order)
             .then((item)=>{
                 console.log('post req', item);
+                this.setState({loading:false, isModal: false})
             })
             .then((item)=>{
                 this.closeModalHandler();
             })
             .catch((error)=>{
+                this.setState({loading:false, isModal:false})
                 console.log('error', error);
             });
     }
@@ -126,18 +130,24 @@ class BurgerBuilder extends Component {
         for (let key in disabledButtons) {
             disabledButtons[key] = disabledButtons[key] <=0;
         }
+        let orderSummary = 
+          <OrderSummary 
+            ingredients={this.state.ingredients} 
+            closeModal={this.closeModalHandler}
+            cancelButtonHandler={this.closeModalHandler}
+            totalPrice={this.state.totalPrice}
+            continueButtonHandler = {this.continueButtonHandler}/>; 
+
+        if (this.state.loading) {
+            orderSummary = <Spinner/>;
+        }
         return (
             <Auxialuary>
                 <Modal 
                   show={this.state.isModal}
                   modalCLosedHandler={this.closeModalHandler}
                     >
-                    <OrderSummary 
-                      ingredients={this.state.ingredients} 
-                      closeModal={this.closeModalHandler}
-                      cancelButtonHandler={this.closeModalHandler}
-                      totalPrice={this.state.totalPrice}
-                      continueButtonHandler = {this.continueButtonHandler}/>
+                    {orderSummary}
                 </Modal>
                 <div ref={this.myRef}>
                     <Burger ingredients={this.state.ingredients}/> 
