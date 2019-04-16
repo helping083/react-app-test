@@ -3,8 +3,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 5px 0;
-    position: relative;
-    right: 40px;
+    
 }
 
 .BuildControl button {
@@ -55,4 +54,11 @@
 .BuildControl .More:hover,.BuildControl .More:active {
     background-color: #99703F;
     color: white;
+}
+@media(min-width:500px) {
+    .BuildControl {
+        position: relative;
+        right: 40px;
+    }
+    
 }

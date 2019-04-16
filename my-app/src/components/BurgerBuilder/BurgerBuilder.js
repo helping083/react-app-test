@@ -4,7 +4,7 @@ import Burger from  '../Burger.js/Burger';
 import BuildControls from '../../components/Burger.js/BuildControls/BuildControls';
 import Modal from '../UI-parts/Modal/Modal';
 import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
-
+import axios from '../../utils/axios-orders';
 
 const INGREDIENTS_PRICES = {
     salad: 0.5,
@@ -27,9 +27,13 @@ class BurgerBuilder extends Component {
         },
         totalPrice: 6,
         isOrder: false,
-        isModal: false
+        isModal: false,
+        users: []
     }
 
+    componentDidMount() {
+      
+    }
     addIngredientHandler = (type) => {
        
         const oldIngredient = this.state.ingredients[type];
@@ -73,13 +77,12 @@ class BurgerBuilder extends Component {
         } else {
             this.setState({isOrder: false})
         }
-        console.log('isworking',ingredients_sum)
+        
     }
     
     modalHandler = () => {
         this.setState({isModal: true});
-        const height = this.myRef.current.clientHeight;
-        console.log('height', height);
+        
     }
     
     closeModalHandler = () => {
@@ -90,8 +93,31 @@ class BurgerBuilder extends Component {
 
     }
     continueButtonHandler = () => {
-
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: "Oleh",
+                addres: {
+                    street: 'Test',
+                    zipcod: 79049,
+                    country: 'Ukraine',
+                    email: "helping083@gmail.com"
+                }
+            }
+        }
+        axios.post('/orders.json', order)
+            .then((item)=>{
+                console.log('post req', item);
+            })
+            .then((item)=>{
+                this.closeModalHandler();
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            });
     }
+    
     render() {
         const disabledButtons = {
             ...this.state.ingredients

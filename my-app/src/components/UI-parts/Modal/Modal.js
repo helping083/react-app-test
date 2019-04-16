@@ -1,8 +1,7 @@
 import React from 'react';
 import classes from './Modal.css';
 import Backdrop from '../Backdrop/Backdrop';
-
-const modal = (props) => (
+const modal = React.memo(props => (
     <div>
         <Backdrop show={props.show} clicked={props.modalCLosedHandler}/>
         <div 
@@ -15,6 +14,6 @@ const modal = (props) => (
             {props.children}
         </div>
     </div>
-);
+));
 
 export default modal;

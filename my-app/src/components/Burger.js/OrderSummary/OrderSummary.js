@@ -8,9 +8,7 @@ const spanStyle = {
 }
 
 class OrderSumarry extends Component {
-  constructor(props){
-      super(props);
-  }  
+  
   componentWillUpdate() {
       console.log('order summary will update')
   }
