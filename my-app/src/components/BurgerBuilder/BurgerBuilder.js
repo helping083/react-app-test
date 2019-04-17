@@ -23,12 +23,7 @@ class BurgerBuilder extends Component {
         this.myRef = React.createRef();
     }
     state = {
-        ingredients: {
-            salad: 1,
-            bacon: 1,
-            cheese: 1,
-            meat: 1
-        },
+        ingredients: null,
         totalPrice: 6,
         isOrder: false,
         isModal: false,
@@ -36,8 +31,17 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-      
+      axios.get('https://react-burger-f1fcc.firebaseio.com/orders/-LcbJOUXka5FNN-eElVX/ingredients.json')
+        .then((item)=>{
+            this.setState({ingredients: item.data});
+        })
+        .then((item)=>{
+            this.calcTotalPrice({...this.state.ingredients})
+            console.log('after get req', this.state.ingredients)
+        })
+        .catch(error => {console.log(error)});
     }
+
     addIngredientHandler = (type) => {
        
         const oldIngredient = this.state.ingredients[type];
@@ -52,16 +56,20 @@ class BurgerBuilder extends Component {
         this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
         this.isOrderHandler(updatedIngredients);
     }
+
     removeIngredientHandler = (type) => {
         
         const oldIngredient = this.state.ingredients[type];
+
         if (oldIngredient <=0 ) {
             return;
         }
+
         const updatedIngr = oldIngredient - 1;
         const updatedIngredients = {
             ...this.state.ingredients
         };
+
         updatedIngredients[type] = updatedIngr;
         const totalPrice = INGREDIENTS_PRICES[type];
         const oldPrice = this.state.totalPrice;
@@ -69,6 +77,7 @@ class BurgerBuilder extends Component {
         this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
         this.isOrderHandler(updatedIngredients);
     }
+
     isOrderHandler = (ingredients) => {
         //get ing values
         let ingredients_values = Object.values(ingredients);
@@ -92,10 +101,21 @@ class BurgerBuilder extends Component {
     closeModalHandler = () => {
         this.setState({isModal:false});
     }
+
     cancelButtonHandler = ()=>{
 
 
     }
+
+    calcTotalPrice = (states) => {
+        let price = 0;
+        for(let key in states) {
+            let ingPrice = states[key]*INGREDIENTS_PRICES[key];
+            price+=ingPrice
+        }
+        this.setState({totalPrice:price});
+    }
+
     continueButtonHandler = () => {
         this.setState({loading: true})
         const order = {
@@ -133,18 +153,42 @@ class BurgerBuilder extends Component {
         for (let key in disabledButtons) {
             disabledButtons[key] = disabledButtons[key] <=0;
         }
-        let orderSummary = 
-          <OrderSummary 
-            ingredients={this.state.ingredients} 
-            closeModal={this.closeModalHandler}
-            cancelButtonHandler={this.closeModalHandler}
-            totalPrice={this.state.totalPrice}
-            continueButtonHandler = {this.continueButtonHandler}/>; 
+        let orderSummary = null;
+        
+        let burger = <Spinner/>;  
 
+        if(this.state.ingredients) {
+            burger =
+            (
+             <Auxialuary>  
+              <div ref={this.myRef}>
+                  <Burger ingredients={this.state.ingredients}/> 
+              </div>
+              <BuildControls
+                  totalPrice={this.state.totalPrice} 
+                  addIngredient={this.addIngredientHandler}
+                  removeIngredient={this.removeIngredientHandler}
+                  //disabled controls
+                  disabledInfo={disabledButtons}
+                  //disabled ordernow button  
+                  disabledOrder={this.state.isOrder}
+                  //open modal component
+                  openModal={this.modalHandler}/>
+              </Auxialuary>   
+            );
+            orderSummary = 
+              <OrderSummary 
+                ingredients={this.state.ingredients} 
+                closeModal={this.closeModalHandler}
+                cancelButtonHandler={this.closeModalHandler}
+                totalPrice={this.state.totalPrice}
+                continueButtonHandler = {this.continueButtonHandler}/>; 
+        }
         if (this.state.loading) {
             orderSummary = <Spinner/>;
         }
-        return (
+
+         return (
             <Auxialuary>
                 <Modal 
                   show={this.state.isModal}
@@ -152,19 +196,7 @@ class BurgerBuilder extends Component {
                     >
                     {orderSummary}
                 </Modal>
-                <div ref={this.myRef}>
-                    <Burger ingredients={this.state.ingredients}/> 
-                </div>
-               <BuildControls
-                    totalPrice={this.state.totalPrice} 
-                    addIngredient={this.addIngredientHandler}
-                    removeIngredient={this.removeIngredientHandler}
-                    //disabled controls
-                    disabledInfo={disabledButtons}
-                    //disabled ordernow button  
-                    disabledOrder={this.state.isOrder}
-                    //open modal component
-                    openModal={this.modalHandler}/>
+               {burger}
             </Auxialuary>
         );
     }
