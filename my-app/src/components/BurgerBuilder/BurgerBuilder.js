@@ -31,7 +31,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-      axios.get('https://react-burger-f1fcc.firebaseio.com/orders/-LcbJOUXka5FNN-eElVX/ingredients.json')
+      axios.get('https://react-burger-f1fcc.firebaseio.com/orders/-LcfPHe5WnfMEcBNk55I/ingredients.json')
         .then((item)=>{
             this.setState({ingredients: item.data});
         })
@@ -95,7 +95,7 @@ class BurgerBuilder extends Component {
     
     modalHandler = () => {
         this.setState({isModal: true});
-        
+        console.log('total price', this.state.totalPrice);
     }
     
     closeModalHandler = () => {
@@ -108,7 +108,7 @@ class BurgerBuilder extends Component {
     }
 
     calcTotalPrice = (states) => {
-        let price = 0;
+        let price = this.state.totalPrice;
         for(let key in states) {
             let ingPrice = states[key]*INGREDIENTS_PRICES[key];
             price+=ingPrice
