@@ -6,7 +6,6 @@ import Modal from '../UI-parts/Modal/Modal';
 import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
 import axios from '../../utils/axios-orders';
 import Spinner from '../UI-parts/Spinner/Spinner';
-
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 
@@ -31,13 +30,13 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
       axios.get('https://react-burger-f1fcc.firebaseio.com/orders/-LcfPHe5WnfMEcBNk55I/ingredients.json')
         .then((item)=>{
             this.setState({ingredients: item.data});
         })
         .then((item)=>{
             this.calcTotalPrice({...this.state.ingredients})
-            console.log('after get req', this.state.ingredients)
         })
         .catch(error => {console.log(error)});
     }
@@ -117,32 +116,43 @@ class BurgerBuilder extends Component {
     }
 
     continueButtonHandler = () => {
-        this.setState({loading: true})
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: "Oleh",
-                addres: {
-                    street: 'Test',
-                    zipcod: 79049,
-                    country: 'Ukraine',
-                    email: "helping083@gmail.com"
-                }
-            }
+        
+        
+        // this.setState({loading: true})
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: "Oleh",
+        //         addres: {
+        //             street: 'Test',
+        //             zipcod: 79049,
+        //             country: 'Ukraine',
+        //             email: "helping083@gmail.com"
+        //         }
+        //     }
+        // }
+        // axios.post('/orders.json', order)
+        //     .then((item)=>{
+        //         console.log('post req', item);
+        //         this.setState({loading:false, isModal: false})
+        //     })
+        //     .then((item)=>{
+        //         this.closeModalHandler();
+        //     })
+        //     .catch((error)=>{
+        //         this.setState({loading:false, isModal:false})
+        //         console.log('error', error);
+        //     });
+        const queryParams = [];
+        for (let key in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(key)  + '=' + encodeURIComponent(this.state.ingredients[key]));
         }
-        axios.post('/orders.json', order)
-            .then((item)=>{
-                console.log('post req', item);
-                this.setState({loading:false, isModal: false})
-            })
-            .then((item)=>{
-                this.closeModalHandler();
-            })
-            .catch((error)=>{
-                this.setState({loading:false, isModal:false})
-                console.log('error', error);
-            });
+        const queryStrings = queryParams.join('&'); 
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryStrings
+        });
     }
     
     render() {

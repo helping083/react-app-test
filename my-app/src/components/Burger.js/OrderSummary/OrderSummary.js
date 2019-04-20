@@ -9,9 +9,7 @@ const spanStyle = {
 
 class OrderSumarry extends Component {
   
-  componentWillUpdate() {
-      console.log('order summary will update')
-  }
+  
   render() {
     const ingsSum  = Object.keys(this.props.ingredients)
     .map((item)=>{
