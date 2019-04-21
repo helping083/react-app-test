@@ -5,30 +5,33 @@ import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
     state = {
-        ingredients: {
-            salad: 1,
-            meat: 1,
-            cheese: 1,
-            bacon: 0
-        }
+        ingredients: null,
+        totalPrice: 6
     }
-    componentDidMount() {
-        console.log('props in check', this.props)
+
+    componentWillMount() {
         const queryString = require('query-string');
         const parsed = queryString.parse(this.props.location.search);
-        let ingredients = {}
+        let ingredients = {};
+        let totalPrice= 0;
         for (let key in parsed) {
-            ingredients[key] = +parsed[key];
+            if (key[0]=== 'price') {
+                totalPrice = key[1];
+            } else {
+                ingredients[key] = +parsed[key];
+            }
         }
-        this.setState({ingredients:ingredients})
+        this.setState({ingredients:ingredients, totalPrice: totalPrice})
     }
+
     checkoutCancelledHandler = () => {
-        console.log('hello');
         this.props.history.goBack();
     }
+
     checkoutContinuedHandler = () => {
         this.props.history.replace('/checkout/contact-data')
     }
+
     render() {
         return (
             <div>
@@ -36,7 +39,14 @@ class Checkout extends Component {
                   onCheckoutCancelled={this.checkoutCancelledHandler}
                   onCheckoutContinued={this.checkoutContinuedHandler} 
                   ingredients={this.state.ingredients}/>
-                <Route path={this.props.match.path + '/contact-data'} component={ContactData}/>
+                <Route 
+                  path={this.props.match.path + '/contact-data'} 
+                  component={()=>(
+                    <ContactData 
+                      ingredients={this.state.ingredients}
+                      price={this.state.totalPrice}
+                      />
+                )}/>
             </div>
         );
     }

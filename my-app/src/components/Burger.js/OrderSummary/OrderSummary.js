@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Auxialiry from '../../../hoc/auxuilary/Auxialury';
 import classes from './OrderSummary.css';
 import Button from '../../UI-parts/Button/Button';
-
 const spanStyle = {
     textTransform: 'Uppercase'
 }

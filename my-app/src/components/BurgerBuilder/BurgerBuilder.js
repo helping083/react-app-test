@@ -94,7 +94,6 @@ class BurgerBuilder extends Component {
     
     modalHandler = () => {
         this.setState({isModal: true});
-        console.log('total price', this.state.totalPrice);
     }
     
     closeModalHandler = () => {
@@ -116,38 +115,11 @@ class BurgerBuilder extends Component {
     }
 
     continueButtonHandler = () => {
-        
-        
-        // this.setState({loading: true})
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: "Oleh",
-        //         addres: {
-        //             street: 'Test',
-        //             zipcod: 79049,
-        //             country: 'Ukraine',
-        //             email: "helping083@gmail.com"
-        //         }
-        //     }
-        // }
-        // axios.post('/orders.json', order)
-        //     .then((item)=>{
-        //         console.log('post req', item);
-        //         this.setState({loading:false, isModal: false})
-        //     })
-        //     .then((item)=>{
-        //         this.closeModalHandler();
-        //     })
-        //     .catch((error)=>{
-        //         this.setState({loading:false, isModal:false})
-        //         console.log('error', error);
-        //     });
         const queryParams = [];
         for (let key in this.state.ingredients) {
             queryParams.push(encodeURIComponent(key)  + '=' + encodeURIComponent(this.state.ingredients[key]));
         }
+        queryParams.push('price=', this.state.totalPrice)
         const queryStrings = queryParams.join('&'); 
         this.props.history.push({
             pathname: '/checkout',
@@ -197,7 +169,7 @@ class BurgerBuilder extends Component {
         if (this.state.loading) {
             orderSummary = <Spinner/>;
         }
-
+       
          return (
             <Auxialuary>
                 <Modal 

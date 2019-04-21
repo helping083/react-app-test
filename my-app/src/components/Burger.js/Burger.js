@@ -4,6 +4,7 @@ import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 import { withRouter } from 'react-router-dom'
 
 const burger = (props) => {
+
     let transIngredients = Object.keys(props.ingredients)
       .map((item) => {
         return [...Array(props.ingredients[item])]
@@ -13,9 +14,11 @@ const burger = (props) => {
       }).reduce((prev,curr)=>{
           return prev.concat(curr);
       },[]);
+      
       if (transIngredients.length===0) {
           transIngredients = <p>add ingredients</p>
       }
+
     return (
         <div className={classes.Burger}>
         <BurgerIngredient type={'bread-top'}/>
