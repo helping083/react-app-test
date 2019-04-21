@@ -8,8 +8,7 @@ class Layout extends Component {
     showSideDrawer: false
   }
   sidedrawerClosed = () => {
-    this.setState({showSideDrawer:false})
-    console.log(this.state.showSideDrawer)
+    this.setState({showSideDrawer:false});
   }
   drawerToggle = () => {
     this.setState((prevState)=>{

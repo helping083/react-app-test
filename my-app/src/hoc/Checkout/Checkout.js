@@ -6,7 +6,7 @@ import ContactData from './ContactData/ContactData';
 class Checkout extends Component {
     state = {
         ingredients: null,
-        totalPrice: 6
+        addprice: 6
     }
 
     componentWillMount() {
@@ -15,13 +15,14 @@ class Checkout extends Component {
         let ingredients = {};
         let totalPrice= 0;
         for (let key in parsed) {
-            if (key[0]=== 'price') {
-                totalPrice = key[1];
+            if (key === 'price') {
+                totalPrice = +parsed[key];
             } else {
                 ingredients[key] = +parsed[key];
             }
         }
-        this.setState({ingredients:ingredients, totalPrice: totalPrice})
+        this.setState({ingredients:ingredients});
+        this.setState({addprice: totalPrice})
     }
 
     checkoutCancelledHandler = () => {
@@ -44,7 +45,7 @@ class Checkout extends Component {
                   component={()=>(
                     <ContactData 
                       ingredients={this.state.ingredients}
-                      price={this.state.totalPrice}
+                      price={this.state.addprice}
                       />
                 )}/>
             </div>

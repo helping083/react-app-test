@@ -45,7 +45,6 @@ class ContactData extends Component {
             });
     }
     render() {
-        console.log('props in contact data', this.props)
         return (
             <div className={classes.ContactData}>
                 <h4>Enter Your Contact Data</h4>
