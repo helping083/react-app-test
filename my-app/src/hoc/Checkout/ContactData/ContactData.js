@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Button from '../../../components/UI-parts/Button/Button';
 import classes from './ContactData.css';
+import Spinner from '../../../components/UI-parts/Spinner/Spinner';
 import axios from '../../../utils/axios-orders';
 
 class ContactData extends Component {
@@ -33,11 +34,11 @@ class ContactData extends Component {
         }
         axios.post('/orders.json', order)
             .then((item)=>{
-                console.log('post req', item);
                 this.setState({loading:false})
+
             })
             .then((item)=>{
-                // this.closeModalHandler();
+                this.props.history.push('/');
             })
             .catch((error)=>{
                 this.setState({loading:false})
@@ -45,16 +46,22 @@ class ContactData extends Component {
             });
     }
     render() {
+        let form = (
+            <form>
+                <input className={classes.Input} type="text" name="name" placeholder="Your Name"/>
+                <input className={classes.Input} type="email" name="email" placeholder="Your email"/>
+                <input className={classes.Input} type="text" name="street" placeholder="Your Adrress"/>
+                <input className={classes.Input} type="number" name="postalCode" placeholder="Your zip-code"/>
+                <Button btnType = "Success" clicked={this.orderHandler}>ORDER</Button>
+            </form>
+        );
+        if (this.state.loading) {
+            form = <Spinner/>
+        }
         return (
             <div className={classes.ContactData}>
                 <h4>Enter Your Contact Data</h4>
-                <form>
-                  <input className={classes.Input} type="text" name="name" placeholder="Your Name"/>
-                  <input className={classes.Input} type="email" name="email" placeholder="Your email"/>
-                  <input className={classes.Input} type="text" name="street" placeholder="Your Adrress"/>
-                  <input className={classes.Input} type="number" name="postalCode" placeholder="Your zip-code"/>
-                  <Button btnType = "Success" clicked={this.orderHandler}>ORDER</Button>
-                </form>
+                {form}
             </div>
         );
     }
