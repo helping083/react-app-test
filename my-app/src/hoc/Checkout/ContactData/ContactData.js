@@ -27,7 +27,7 @@ class ContactData extends Component {
         zipCode: {
             elementhType: 'input',
             elementConfig: {
-                type: 'text',
+                type: 'number',
                 placeholder: 'zipCode',
             },
             value: ''
@@ -90,6 +90,18 @@ class ContactData extends Component {
                 console.log('error', error);
             });
     }
+    inputChanged = (event, inputIndent) => {
+        const formData = {
+            ...this.state.orderForm
+        }
+        const updatedFormData = {
+            ...formData[inputIndent]
+        };
+        updatedFormData.value = event.target.value;
+        formData[inputIndent] = updatedFormData;
+        this.setState({orderForm: formData});
+        
+    }
     render() {
         const fromElementsArray = [];
         for (let key in this.state.orderForm) {
@@ -98,7 +110,6 @@ class ContactData extends Component {
                 config: this.state.orderForm[key]
             })
         }
-        console.log('from elemets array', fromElementsArray)
         let form = (
             <form>
                 {fromElementsArray.map((item)=>{
@@ -108,6 +119,7 @@ class ContactData extends Component {
                           elementhType={item.config.elementhType}
                           elementConfig={item.config.elementConfig}
                           value={item.config.value}
+                          changed={(event)=>this.inputChanged(event, item.id)}
                         />
                     );
                 })}

@@ -2,22 +2,25 @@ import React from "react";
 import classes from './Input.css';
 
 const input = (props) => {
-  console.log('props', props)
     let inputElement = null;
 
     switch (props.elementhType) {
         case ('input'):
           inputElement = 
-            <input className={classes.InputElement} 
+            <input 
+              className={classes.InputElement} 
               {...props.elementConfig}
               value={props.value}
+              onChange={props.changed}
             />
           break;
         case ('textarea'):
           inputElement = 
-            <textarea className={classes.InputElement} 
+            <textarea 
+              className={classes.InputElement} 
               {...props.elementConfig}
               value={props.value}
+              onChange={props.changed}
             />;
           break;
         case ('select'):
@@ -25,6 +28,7 @@ const input = (props) => {
             <select
               className={classes.InputElement}
               value={props.value}
+              onChange={props.changed}
             >
               {props.elementConfig.options.map((item, index)=>{
                 return (
@@ -41,9 +45,11 @@ const input = (props) => {
           break; 
         default:
           inputElement = 
-            <input className={classes.InputElement} 
-            {...props.elementConfig}
-            value={props.value}
+            <input 
+              className={classes.InputElement} 
+              onChange={props.changed}
+              {...props.elementConfig}
+              value={props.value}
             />; 
     }
 
