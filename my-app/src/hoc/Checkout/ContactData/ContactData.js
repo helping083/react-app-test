@@ -7,13 +7,57 @@ import axios from '../../../utils/axios-orders';
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+      orderForm: {
+        name:  {
+          elementhType: 'input',
+          elementConfig: {
+              type: 'text',
+              placeholder: 'your name'
+          },
+          value: 'Oleh'    
         },
-        loading: false
+        street: {
+            elementhType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'your adress'
+            },
+            value: ' '
+        },
+        zipCode: {
+            elementhType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'zipCode',
+            },
+            value: ''
+        },
+        country: {
+            elementhType: 'input',
+            elementConfig: {
+                type: 'text',
+                placeholder: 'country'
+            },
+            value: ''
+        },
+        email: {
+            elementhType: 'input',
+            elementConfig: {
+                type: 'email',
+                placeholder: 'email'
+            },
+            value: ''
+        },
+        deliveryMethod: {
+            elementhType: 'select',
+            elementConfig: {
+               options: [{value: 'fastest', displayValue: 'fastest'}, 
+                         {value: 'cheapest', displayValue: 'cheapest'}]
+            },
+            value: ''
+        }
+      },
+      loading: false
     }
 
     orderHandler = (event) => {
