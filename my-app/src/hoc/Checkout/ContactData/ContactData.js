@@ -14,7 +14,7 @@ class ContactData extends Component {
               type: 'text',
               placeholder: 'your name'
           },
-          value: 'Oleh'    
+          value: ''    
         },
         street: {
             elementhType: 'input',
@@ -22,7 +22,7 @@ class ContactData extends Component {
                 type: 'text',
                 placeholder: 'your adress'
             },
-            value: ' '
+            value: ''
         },
         zipCode: {
             elementhType: 'input',
@@ -91,12 +91,26 @@ class ContactData extends Component {
             });
     }
     render() {
+        const fromElementsArray = [];
+        for (let key in this.state.orderForm) {
+            fromElementsArray.push({
+                id: key,
+                config: this.state.orderForm[key]
+            })
+        }
+        console.log('from elemets array', fromElementsArray)
         let form = (
             <form>
-                <Input  inputtype = "input" type="text" name="name" placeholder="Your Name"/>
-                <Input  inputtype = "input"  type="email" name="email" placeholder="Your email"/>
-                <Input  inputtype = "input"  type="text" name="street" placeholder="Your Adrress"/>
-                <Input  inputtype = "input"  type="number" name="postalCode" placeholder="Your zip-code"/>
+                {fromElementsArray.map((item)=>{
+                    return (
+                        <Input
+                          key={item.id} 
+                          elementhType={item.config.elementhType}
+                          elementConfig={item.config.elementConfig}
+                          value={item.config.value}
+                        />
+                    );
+                })}
                 <Button btnType = "Success" clicked={this.orderHandler}>ORDER</Button>
             </form>
         );
