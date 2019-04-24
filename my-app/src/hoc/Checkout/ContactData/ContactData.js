@@ -89,6 +89,7 @@ class ContactData extends Component {
                 console.log('error', error);
             });
     }
+
     inputChanged = (event, inputIndent) => {
         const formData = {
             ...this.state.orderForm
@@ -101,6 +102,11 @@ class ContactData extends Component {
         this.setState({orderForm: formData});
         
     }
+
+    checlValidation = (value, rules) => {
+
+    }
+
     render() {
         const fromElementsArray = [];
         for (let key in this.state.orderForm) {

@@ -1,5 +1,6 @@
-import React, {Component} from 'react'
-import Auxialuary from '../../hoc/auxuilary/Auxialury'
+import React, {Component} from 'react';
+import Auxialuary from '../../hoc/auxuilary/Auxialury';
+import FormikForm from '../UI-parts/formik-form/formikForm';
 import Burger from  '../Burger.js/Burger';
 import BuildControls from '../../components/Burger.js/BuildControls/BuildControls';
 import Modal from '../UI-parts/Modal/Modal';
@@ -180,6 +181,7 @@ class BurgerBuilder extends Component {
                     {orderSummary}
                 </Modal>
                {burger}
+               <FormikForm isOrder={this.state.isOrder}/>
             </Auxialuary>
         );
     }
