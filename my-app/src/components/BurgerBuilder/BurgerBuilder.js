@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Auxialuary from '../../hoc/auxuilary/Auxialury';
-import FormikForm from '../UI-parts/formik-form/formikForm';
+// import FormikForm from '../UI-parts/formik-form/formikForm';
 import Burger from  '../Burger.js/Burger';
 import BuildControls from '../../components/Burger.js/BuildControls/BuildControls';
 import Modal from '../UI-parts/Modal/Modal';
@@ -8,7 +8,7 @@ import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
 import axios from '../../utils/axios-orders';
 import Spinner from '../UI-parts/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-
+// import Position from '../UI-parts/Popper/Popper';
 
 const INGREDIENTS_PRICES = {
     salad: 0.5,
@@ -27,7 +27,8 @@ class BurgerBuilder extends Component {
         totalPrice: 6,
         isOrder: false,
         isModal: false,
-        loading: false
+        loading: false,
+        isPopper: false
     }
 
     componentDidMount() {
@@ -37,6 +38,9 @@ class BurgerBuilder extends Component {
         })
         .then((item)=>{
             this.calcTotalPrice({...this.state.ingredients})
+        })
+        .then((item)=>{
+            this.setState({isPopper: true});
         })
         .catch(error => {console.log(error)});
     }
@@ -128,8 +132,17 @@ class BurgerBuilder extends Component {
             search: '?' + queryStrings
         });
     }
-    
+    showPopper = () => {
+        this.setState(prevState => ({
+            isPopper: !prevState.isPopper,
+          }))
+    }
     render() {
+        // let position = this.state.isPopper ? <Position/>: null;
+        // var style = {
+        //     width: 200,
+        //     height: 200
+        //   };
         const disabledButtons = {
             ...this.state.ingredients
         }
@@ -181,7 +194,6 @@ class BurgerBuilder extends Component {
                     {orderSummary}
                 </Modal>
                {burger}
-               <FormikForm isOrder={this.state.isOrder}/>
             </Auxialuary>
         );
     }

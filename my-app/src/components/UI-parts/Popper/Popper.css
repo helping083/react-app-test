@@ -1,0 +1,34 @@
+.reference {
+    width: 40px;
+    height: 40px;
+    background: red;
+    position: fixed;
+    left:  0px;
+}
+
+[x-arrow] {
+    position: absolute;
+}
+.popper {
+    width: 200px;
+    height: 40px;
+    background: rgba(255, 193, 7, 1);
+    text-align: center;
+    transition: display 2s easy-in;
+}
+.popper[x-placement="bottom"] {
+    margin-top: 10px;
+}
+.popper[x-placement="bottom"] [x-arrow] {
+    top: -10px;
+    border-bottom: 10px solid red;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+  }
+  
+  .popper[x-placement="top"] [x-arrow] {
+    bottom: -10px;
+    border-top: 10px solid white;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+  }
