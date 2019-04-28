@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import Auxialuary from '../../hoc/auxuilary/Auxialury';
 // import FormikForm from '../UI-parts/formik-form/formikForm';
 import Burger from  '../Burger.js/Burger';
@@ -8,6 +9,7 @@ import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
 import axios from '../../utils/axios-orders';
 import Spinner from '../UI-parts/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import * as actyonTypes from  '../../store/action';
 // import Position from '../UI-parts/Popper/Popper';
 
 const INGREDIENTS_PRICES = {
@@ -23,7 +25,7 @@ class BurgerBuilder extends Component {
         this.myRef = React.createRef();
     }
     state = {
-        ingredients: null,
+        // ingredients: null,
         totalPrice: 6,
         isOrder: false,
         isModal: false,
@@ -32,17 +34,17 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-      axios.get('https://react-burger-f1fcc.firebaseio.com/Ingredients.json')
-        .then((item)=>{
-            this.setState({ingredients: item.data});
-        })
-        .then((item)=>{
-            this.calcTotalPrice({...this.state.ingredients})
-        })
-        .then((item)=>{
-            this.setState({isPopper: true});
-        })
-        .catch(error => {console.log(error)});
+    //   axios.get('https://react-burger-f1fcc.firebaseio.com/Ingredients.json')
+    //     .then((item)=>{
+    //         this.setState({ingredients: item.data});
+    //     })
+    //     .then((item)=>{
+    //         this.calcTotalPrice({...this.state.ingredients})
+    //     })
+    //     .then((item)=>{
+    //         this.setState({isPopper: true});
+    //     })
+    //     .catch(error => {console.log(error)});
     }
 
     addIngredientHandler = (type) => {
@@ -144,7 +146,7 @@ class BurgerBuilder extends Component {
         //     height: 200
         //   };
         const disabledButtons = {
-            ...this.state.ingredients
+            ...this.props.ing
         }
         
         for (let key in disabledButtons) {
@@ -154,17 +156,17 @@ class BurgerBuilder extends Component {
         
         let burger = <Spinner/>;  
 
-        if(this.state.ingredients) {
+        if(this.props.ing) {
             burger =
             (
              <Auxialuary>  
               <div ref={this.myRef}>
-                  <Burger ingredients={this.state.ingredients}/> 
+                  <Burger ingredients={this.props.ing}/> 
               </div>
               <BuildControls
                   totalPrice={this.state.totalPrice} 
-                  addIngredient={this.addIngredientHandler}
-                  removeIngredient={this.removeIngredientHandler}
+                  addIngredient={this.props.onIngredientAdded}
+                  removeIngredient={this.props.onIngredientRemoved}
                   //disabled controls
                   disabledInfo={disabledButtons}
                   //disabled ordernow button  
@@ -175,7 +177,7 @@ class BurgerBuilder extends Component {
             );
             orderSummary = 
               <OrderSummary 
-                ingredients={this.state.ingredients} 
+                ingredients={this.props.ing} 
                 closeModal={this.closeModalHandler}
                 cancelButtonHandler={this.closeModalHandler}
                 totalPrice={this.state.totalPrice}
@@ -199,4 +201,17 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default WithErrorHandler(BurgerBuilder, axios);
+const mapStateToProps = state => {
+    return {
+        ing: state.ingredients
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onIngredientAdded: (ingName)=> dispatch({type: actyonTypes.ADD_INGREDIENTS, ingredientName: ingName}),
+        onIngredientRemoved: (ingName)=> dispatch({type: actyonTypes.REMOVE_INGREDIENT, ingredientName: ingName})
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandler(BurgerBuilder, axios));
