@@ -76,7 +76,7 @@ class ContactData extends Component {
         deliveryMethod: {
             elementhType: 'select',
             elementConfig: {
-               options: [{value: 'fastest', displayValue: 'fastest'}, 
+               options: [{value:'', displayValue:''},{value: 'fastest', displayValue: 'fastest'}, 
                          {value: 'cheapest', displayValue: 'cheapest'}]
             },
             value: '',
@@ -87,9 +87,10 @@ class ContactData extends Component {
             touched: false
         }
       },
-      loading: false
+      loading: false,
+      formIsValid: false
     }
-
+    // set data to the server
     orderHandler = (event) => {
         event.preventDefault()
         this.setState({loading: true});
@@ -97,6 +98,7 @@ class ContactData extends Component {
         for (let key in this.state.orderForm) {
             formData[key] = this.state.orderForm[key].value;
         }
+        //set default value for select input
         if(!formData['deliveryMethod']) {
             formData['deliveryMethod'] = "cheapest";
         }
@@ -119,7 +121,7 @@ class ContactData extends Component {
                 console.log('error', error);
             });
     }
-
+    // validate form and update state while user typing in the form
     inputChanged = (event, inputIndent) => {
         const formData = {
             ...this.state.orderForm
@@ -131,11 +133,17 @@ class ContactData extends Component {
         updatedFormData.valid = this.checlValidation(updatedFormData.value, updatedFormData.validation, inputIndent);
         updatedFormData.touched=true;
         formData[inputIndent] = updatedFormData;
-        console.log('updFormdata', updatedFormData);
+        // console.log('updFormdata', updatedFormData);
+        let formIsValid = true;
+        for(let key in formData) {
+            formIsValid= formData[key].valid && formIsValid
+        }
+        console.log('form is valid', formIsValid)
         this.setState({orderForm: formData});
-        
+        this.setState({formIsValid: formIsValid});
+        console.log('setstate', this.state)
     }
-
+    //custom validation for form
     checlValidation = (value, rules, inputin) => {
         let isValid = true;
           if (rules.required) {
@@ -145,6 +153,7 @@ class ContactData extends Component {
     }
 
     render() {
+        //create data for the input component
         const fromElementsArray = [];
         for (let key in this.state.orderForm) {
             fromElementsArray.push({
@@ -152,6 +161,7 @@ class ContactData extends Component {
                 config: this.state.orderForm[key]
             })
         }
+        //create form
         let form = (
             <form onSubmit={this.orderHandler}>
                 {fromElementsArray.map((item)=>{
@@ -162,15 +172,17 @@ class ContactData extends Component {
                           elementhType={item.config.elementhType}
                           elementConfig={item.config.elementConfig}
                           value={item.config.value}
+                          valueType={item.config.elementConfig.placeholder}
                           shouldValidate={item.config.validation}
                           touched={item.config.touched}
                           changed={(event)=>this.inputChanged(event, item.id)}
                         />
                     );
                 })}
-                <Button btnType = "Success">ORDER</Button>
+                <Button btnType = "Success" disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
         );
+        //show spinner while sending data to the server
         if (this.state.loading) {
             form = <Spinner/>
         }

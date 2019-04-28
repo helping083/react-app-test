@@ -2,14 +2,18 @@ import React from "react";
 import classes from './Input.css';
 
 const input = (props) => {
+    //set error class when an input isn't valid
     let inputElement = null;
-    console.log("props.invalid",props.invalid)
     const inputCLasses = [classes.InputElement]
     if (props.invalid && props.shouldValidate && props.touched) {
         inputCLasses.push(classes.Invalid);
     }
-
-
+    //create erorrs message
+    let validationError = null;
+    if (props.invalid && props.touched) {
+        validationError = <p>Please enter {props.valueType}</p>;
+    }
+    //create input type depending on data from the state
     switch (props.elementhType) {
         case ('input'):
           inputElement = 
@@ -63,6 +67,7 @@ const input = (props) => {
       <div className={classes.Input}>
         <label className={classes.Label}>{props.label}</label>
         {inputElement}
+        {validationError}
       </div>
     );
 }
