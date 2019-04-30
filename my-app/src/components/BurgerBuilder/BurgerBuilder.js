@@ -18,70 +18,16 @@ class BurgerBuilder extends Component {
     constructor(props){
         super(props);
         this.myRef = React.createRef();
+        
     }
     state = {
-        // ingredients: null,
         isOrder: false,
-        isModal: false,
-        loading: false,
-        isPopper: false
+        isModal: false
     }
 
-    componentDidMount() {
-    //   axios.get('https://react-burger-f1fcc.firebaseio.com/Ingredients.json')
-    //     .then((item)=>{
-    //         this.setState({ingredients: item.data});
-    //     })
-    //     .then((item)=>{
-    //         this.calcTotalPrice({...this.state.ingredients})
-    //     })
-    //     .then((item)=>{
-    //         this.setState({isPopper: true});
-    //     })
-    //     .catch(error => {console.log(error)});
+    componentDidMount () {
+        this.props.onInitIngredients();
     }
-
-    // addIngredientHandler = (type) => {
-       
-    //     const oldIngredient = this.state.ingredients[type];
-    //     const updatedIngr = oldIngredient + 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-    //     updatedIngredients[type] = updatedIngr;
-    //     const totalPrice = INGREDIENTS_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice+totalPrice;
-    //     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-    //     this.isOrderHandler(updatedIngredients);
-    // }
-
-    // removeIngredientHandler = (type) => {
-        
-    //     const oldIngredient = this.state.ingredients[type];
-
-    //     if (oldIngredient <=0 ) {
-    //         return;
-    //     }
-
-    //     const updatedIngr = oldIngredient - 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-
-    //     updatedIngredients[type] = updatedIngr;
-    //     const totalPrice = INGREDIENTS_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice - totalPrice;
-    //     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-    //     this.isOrderHandler(updatedIngredients);
-    // }
-
-    componentWillUnmount() {
-        console.log('destroy');
-        
-    }
-
     isOrderHandler = (ingredients) => {
         //get ing values
         let ingredients_values = Object.values(ingredients);
@@ -105,20 +51,6 @@ class BurgerBuilder extends Component {
         this.setState({isModal:false});
     }
 
-    cancelButtonHandler = ()=>{
-
-
-    }
-
-    // calcTotalPrice = (states) => {
-    //     let price = this.state.totalPrice;
-    //     for(let key in states) {
-    //         let ingPrice = states[key]*INGREDIENTS_PRICES[key];
-    //         price+=ingPrice
-    //     }
-    //     this.setState({totalPrice:price});
-    // }
-
     continueButtonHandler = () => {
         this.props.history.push('/checkout');
     }
@@ -128,11 +60,6 @@ class BurgerBuilder extends Component {
           }))
     }
     render() {
-        // let position = this.state.isPopper ? <Position/>: null;
-        // var style = {
-        //     width: 200,
-        //     height: 200
-        //   };
         const disabledButtons = {
             ...this.props.ing
         }
@@ -142,7 +69,7 @@ class BurgerBuilder extends Component {
         }
         let orderSummary = null;
         
-        let burger = <Spinner/>;  
+        let burger = this.props.error ? <p>ingredients can't be loaded</p> :<Spinner/>;  
 
         if(this.props.ing) {
             burger =
@@ -171,10 +98,6 @@ class BurgerBuilder extends Component {
                 totalPrice={this.props.price}
                 continueButtonHandler = {this.continueButtonHandler}/>; 
         }
-        if (this.state.loading) {
-            orderSummary = <Spinner/>;
-        }
-       
          return (
             <Auxialuary>
                 <Modal 
@@ -190,16 +113,19 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => {
+    console.log('props map burger in burger builder component', state)
     return {
         ing: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName)=> dispatch(burgerBuilderActions.addIngredient(ingName)),
-        onIngredientRemoved: (ingName)=> dispatch(burgerBuilderActions.removeIngredient(ingName))
+        onIngredientRemoved: (ingName)=> dispatch(burgerBuilderActions.removeIngredient(ingName)),
+        onInitIngredients: ()=> dispatch(burgerBuilderActions.initIngridients()) 
     }
 };
 
