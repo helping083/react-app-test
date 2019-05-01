@@ -5,6 +5,8 @@ import Spinner from '../../../components/UI-parts/Spinner/Spinner';
 import Input from '../../../components/UI-parts/Input/Input';
 import axios from '../../../utils/axios-orders';
 import { connect } from 'react-redux';
+import withErrorHandler from '../../withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
     state = {
@@ -94,7 +96,7 @@ class ContactData extends Component {
     // set data to the server
     orderHandler = (event) => {
         event.preventDefault()
-        this.setState({loading: true});
+       
         const formData = {}
         for (let key in this.state.orderForm) {
             formData[key] = this.state.orderForm[key].value;
@@ -109,18 +111,7 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         }
-        axios.post('/orders.json', order)
-            .then((item)=>{
-                this.setState({loading:false})
-
-            })
-            .then((item)=>{
-                this.props.history.push('/');
-            })
-            .catch((error)=>{
-                this.setState({loading:false})
-                console.log('error', error);
-            });
+        this.props.onAddedOrder(order)
     }
     // validate form and update state while user typing in the form
     inputChanged = (event, inputIndent) => {
@@ -203,4 +194,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddedOrder: (orderData) => dispatch(actions.purchaseBurgerStart(orderData))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData,axios));

@@ -9,7 +9,7 @@ const INGREDIENTS_PRICES = {
 
 const initialState =  {
     ingredients: null,
-    totalPrice: 16,
+    totalPrice: 6,
     error: false
 }
 
