@@ -90,7 +90,6 @@ class ContactData extends Component {
             touched: false
         }
       },
-      loading: false,
       formIsValid: false
     }
     // set data to the server
@@ -175,7 +174,7 @@ class ContactData extends Component {
             </form>
         );
         //show spinner while sending data to the server
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner/>
         }
         return (
@@ -190,13 +189,14 @@ class ContactData extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        loading: state.isLoad
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddedOrder: (orderData) => dispatch(actions.purchaseBurgerStart(orderData))
+        onAddedOrder: (orderData) => dispatch(actions.purchaseBurger(orderData))
     }
 }
 
