@@ -26,7 +26,8 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
-        this.props.onInitIngredients();
+        this.props.onInitIngredients()
+        
     }
     isOrderHandler = (ingredients) => {
         //get ing values

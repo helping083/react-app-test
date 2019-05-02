@@ -40,7 +40,19 @@ const reducer = (state = initialState, action) => {
                 error: false,
                 totalPrice: 6
             }
-         
+        
+        case actionTypes.CALC_PRICE:
+            const newPrice = action.ingredients;
+            let price = initialState.totalPrice;
+            if(newPrice) {
+                for (let key in newPrice) {
+                    price+=newPrice[key]*INGREDIENTS_PRICES[key];
+                }
+            }
+            return {
+                ...state,
+                totalPrice: price
+            }
         case actionTypes.FETCH_INGREDIENTS_FAILED:
             return {
                 ...state,

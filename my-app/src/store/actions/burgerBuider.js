@@ -22,20 +22,31 @@ export const setIngredients = (ingredients) => {
     }
 }
 
+export const calcTotalPrice = (ingredients) => {
+    return {
+        type: actionTypes.CALC_PRICE,
+        ingredients: ingredients
+    }
+}
+
 export const setIngredientsFailed = () => {
     return {
         type: actionTypes.FETCH_INGREDIENTS_FAILED
     }
 }
 
-export const initIngridients = () => {
+export const initIngridients =  () => {
     return dispatch => {
-        axios.get('https://react-burger-f1fcc.firebaseio.com/Ingredients.json')
-        .then((item)=>{
-            dispatch(setIngredients(item.data));
-        })
-        .catch(err=>{
-            dispatch(setIngredientsFailed())
-        });
+        return (
+            axios.get('https://react-burger-f1fcc.firebaseio.com/Ingredients.json')
+            .then((item)=>{
+                dispatch(setIngredients(item.data));
+                dispatch(calcTotalPrice(item.data))
+                return item
+            })
+            .catch(err=>{
+                dispatch(setIngredientsFailed())
+            })
+        )
     };
 };
