@@ -104,7 +104,6 @@ class ContactData extends Component {
         if(!formData['deliveryMethod']) {
             formData['deliveryMethod'] = "cheapest";
         }
-        console.log('form data', formData);
         const order = {
             ingredients: this.props.ings,
             price: this.props.price,
@@ -129,10 +128,8 @@ class ContactData extends Component {
         for(let key in formData) {
             formIsValid= formData[key].valid && formIsValid
         }
-        console.log('form is valid', formIsValid)
         this.setState({orderForm: formData});
         this.setState({formIsValid: formIsValid});
-        console.log('setstate', this.state)
     }
     //custom validation for form
     checlValidation = (value, rules, inputin) => {
@@ -188,9 +185,9 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice,
-        loading: state.isLoad
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.isLoad
     }
 }
 
