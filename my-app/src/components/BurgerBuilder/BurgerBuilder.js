@@ -26,7 +26,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
-        this.props.onInitIngredients()
+        this.props.onInitIngredients().then(item=>{console.log('world', item)})
         
     }
     isOrderHandler = (ingredients) => {

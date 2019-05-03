@@ -1,4 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../../utils/burger-utils';
+
 
 const INGREDIENTS_PRICES = {
     salad: 0.5,
@@ -34,13 +36,11 @@ const reducer = (state = initialState, action) => {
                 totalPrice: state.totalPrice - INGREDIENTS_PRICES[action.ingredientName]
             };
         case actionTypes.SET_INGREDIENTS:
-            return {
-                ...state,
+            return updateObject(state, {
                 ingredients: action.ingredients,
                 error: false,
                 totalPrice: 6
-            }
-        
+            })
         case actionTypes.CALC_PRICE:
             const newPrice = action.ingredients;
             let price = initialState.totalPrice;
@@ -49,15 +49,9 @@ const reducer = (state = initialState, action) => {
                     price+=newPrice[key]*INGREDIENTS_PRICES[key];
                 }
             }
-            return {
-                ...state,
-                totalPrice: price
-            }
+           return updateObject(state, {totalPrice: price});
         case actionTypes.FETCH_INGREDIENTS_FAILED:
-            return {
-                ...state,
-                error: true
-            }
+           return updateObject(state, {error: true});
         default:
             return state;
     }
