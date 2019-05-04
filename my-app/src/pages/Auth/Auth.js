@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Input from '../../components/UI-parts/Input/Input';
 import Button from '../../components/UI-parts/Button/Button';
+import classes from './Auth.css';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
-    constructor(props) {
-        super(props);
-    }
     state = {
         controls: {
             email:  {
@@ -17,7 +17,7 @@ class Auth extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    isEmail: true
+                    // isEmail: true
                 },
                 valid: false,
                 touched: false    
@@ -31,7 +31,7 @@ class Auth extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 6
+                    // minLength: 6
                 },
                 valid: false,
                 touched: false    
@@ -45,8 +45,22 @@ class Auth extends Component {
           }
         return isValid;
     }
-    inputChanged = (event, inputIndent) => {
+    inputChanged = (event, controlName) => {
+        const formData = {
+            ...this.state.controls,
+            [controlName]: {
+                ...this.state.controls[controlName],
+                value: event.target.value,
+                valid: this.checlValidationAuth(event.target.value, this.state.controls[controlName].validation),
+                touched: true
+            }
+        };
+        this.setState({controls: formData})
+    };
 
+    submitHandler = (event) => {
+        event.preventDefault();
+        this.props.onAuth(this.state.controls.email, this.state.controls.password);
     }
 
     render() {
@@ -73,8 +87,8 @@ class Auth extends Component {
             );
         })
         return (
-            <div>
-                <form>
+            <div className={classes.Auth}>
+                <form onSubmit={this.submitHandler}>
                       {form}
                      <Button btnType="Success">Login</Button>
                 </form>
@@ -82,4 +96,17 @@ class Auth extends Component {
         )
     };
 };
-export default Auth;
+
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+export const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => { dispatch(actions.auth(email, password)) }
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Auth);
