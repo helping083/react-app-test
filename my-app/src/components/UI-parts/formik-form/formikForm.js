@@ -84,7 +84,7 @@ function MyComponent(props) {
           console.log(values);
         }}
         handleChange = {()=>{
-          console.log('ggs')
+          console.log('ggssss')
         }}
         validationSchema={userSchema}
          validateOnChange={false}
@@ -94,7 +94,12 @@ function MyComponent(props) {
             <Field
               type="email"
               placeholder="Enter email"
-              onChange={props.handleChange}
+              onChange={
+                  (e)=>{
+                    console.log('heu');
+                    props.handleChange(e)
+                  }
+                }
               name="email"
               value={props.values.email}
               validateonblur='false'

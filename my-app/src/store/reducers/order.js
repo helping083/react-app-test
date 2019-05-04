@@ -9,9 +9,11 @@ const initState = {
 const reducer = (state = initState, action)=>{
     switch(action.type) {
         case actionTypes.PURCHASE_INIT:
-            return updateObject(state, {purchased:false})
+            return updateObject(state, {purchased:false});
+
         case actionTypes.PURCHASE_BURGER_START:
-            return updateObject(state, {isLoad: true})
+            return updateObject(state, {isLoad: true});
+
         case actionTypes.PURCHASE_BURGER_SUCCESS:
             let newOrder = updateObject(action.orderData, {id: action.orderId})
             return updateObject(state, {
@@ -19,14 +21,19 @@ const reducer = (state = initState, action)=>{
                 purchased: true,
                 orders: state.orders.concat(newOrder)
             });
+
         case actionTypes.PURCHASE_BURGER_FAIL:
-            return updateObject(state, {isLoad: false})
+            return updateObject(state, {isLoad: false});
+
         case actionTypes.FETCH_ORDERS_START:
-            return updateObject(state, {isLoad: true})
+            return updateObject(state, {isLoad: true});
+
         case actionTypes.FETCH_ORDERS_SUCCESS:
-            return updateObject(state, {orders: action.orders, isLoad: false })
+            return updateObject(state, {orders: action.orders, isLoad: false });
+
         case actionTypes.FETCH_ORDERS_FAILS:
-            return updateObject(state, {isLoad: false})
+            return updateObject(state, {isLoad: false});
+            
         default:
             return state; 
     }
