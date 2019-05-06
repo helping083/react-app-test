@@ -29,6 +29,21 @@ export const authFail = (error) => {
     };
 };
 
+export const checkAuthTimeout = (expirationTime) => {
+    console.log('expiration time')
+    return dispatch => {
+        setTimeout(()=>{
+            dispatch(logout());
+        },expirationTime*1000);
+    }
+}
+
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
 export const auth = (email, password, isSignUp) => {
     return dispatch => {
       dispatch(authStart());
@@ -42,15 +57,15 @@ export const auth = (email, password, isSignUp) => {
       } else {
           urlAuth = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDPi6jEYdUwT-7qUTqPaqhL9HNfedHxwjo';
       }
-      console.log('item in authss')
       axios.post(urlAuth, authData, {headers: headers})    
         .then((item)=>{
-            console.log('item in authss', item)
-            dispatch(authSucces(item.data.idToken, item.data.localId))
+            dispatch(authSucces(item.data.idToken, item.data.localId));
+            dispatch(checkAuthTimeout(item.data.expiresIn));
+            console.log(item.data.expiresIn)
         })
         .catch(error=>{
             console.log('error', error);
-            dispatch(authFail(error))
+            dispatch(authFail(error.response.data.error))
         });
     };
 };

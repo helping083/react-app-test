@@ -109,7 +109,7 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         }
-        this.props.onAddedOrder(order)
+        this.props.onAddedOrder(order, this.props.token)
     }
     // validate form and update state while user typing in the form
     inputChanged = (event, inputIndent) => {
@@ -187,13 +187,14 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.isLoad
+        loading: state.order.isLoad,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddedOrder: (orderData) => dispatch(actions.purchaseBurger(orderData))
+        onAddedOrder: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
     }
 }
 

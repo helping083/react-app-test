@@ -4,6 +4,7 @@ import Spinner from '../../components/UI-parts/Spinner/Spinner';
 import Button from '../../components/UI-parts/Button/Button';
 import classes from './Auth.css';
 import { connect } from 'react-redux';
+import Tippy from '../../components/UI-parts/tippy/tippy';
 import * as actions from '../../store/actions/index';
 
 class Auth extends Component {
@@ -94,10 +95,20 @@ class Auth extends Component {
         })
         if (this.props.loading) {
             form = <Spinner/>
-            console.log('spinner')
         }
+
+        let errorMessage = null;
+        if(this.props.error) {
+            errorMessage=(
+                <p>
+                    {this.props.error.message}
+                </p>
+            )
+        }
+
         return (
             <div className={classes.Auth}>
+                {errorMessage}
                 <form onSubmit={this.submitHandler}>
                       {form}
                      <Button btnType="Success">Login</Button>
@@ -105,22 +116,25 @@ class Auth extends Component {
                 <Button 
                   clicked={this.switchAuthModeHandler}
                   btnType="Danger"> switch to {this.state.isSignUp ? 'signup': 'signin'}</Button>
+                  <Tippy
+                    tippyData = {this.state.isSignUp ? 'create a user': 'log-in'}>
+                      ?
+                  </Tippy>
             </div>
         )
     };
 };
 
 const mapStateToProps = state => {
-    console.log('auth state to props', state.auth)
     return {
-        loading: state.auth.loading
+        loading: state.auth.loading,
+        error: state.auth.error
     };
 };
 
 export const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignUp ) => { 
-            console.log('onauth')
             dispatch(actions.auth(email.value, password.value, isSignUp)) 
         }
     }
