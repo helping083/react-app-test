@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios'
 
-const urlAuth = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDPi6jEYdUwT-7qUTqPaqhL9HNfedHxwjo';
+let urlAuth = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDPi6jEYdUwT-7qUTqPaqhL9HNfedHxwjo';
 
 const headers = {
     'Content-Type': 'application/json'
@@ -9,14 +9,16 @@ const headers = {
 
 export const authStart = () => {
     return {
-        type: actionTypes.AUTH_START
+        type: actionTypes.AUTH_START,
+        loading: true
     };
 };
 
-export const authSucces = (auThdata) => {
+export const authSucces = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: auThdata
+        idToken: token,
+        userId: userId
     };
 };
 
@@ -27,7 +29,7 @@ export const authFail = (error) => {
     };
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignUp) => {
     return dispatch => {
       dispatch(authStart());
       let authData = {
@@ -35,14 +37,19 @@ export const auth = (email, password) => {
           password: password,
           returnSecureToken: true
       }
-      console.log('sss', authData)
-      axios.post(urlAuth, authData,{headers: headers})    
-        .then((item)=>{ 
-            console.log('response', item);
-            dispatch(authSucces(item.data))
+      if (!isSignUp) {
+          urlAuth = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDPi6jEYdUwT-7qUTqPaqhL9HNfedHxwjo'
+      } else {
+          urlAuth = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDPi6jEYdUwT-7qUTqPaqhL9HNfedHxwjo';
+      }
+      console.log('item in authss')
+      axios.post(urlAuth, authData, {headers: headers})    
+        .then((item)=>{
+            console.log('item in authss', item)
+            dispatch(authSucces(item.data.idToken, item.data.localId))
         })
         .catch(error=>{
-            console.log(error);
+            console.log('error', error);
             dispatch(authFail(error))
         });
     };
