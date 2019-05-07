@@ -30,7 +30,7 @@ const buildControls = (props) => (
         <button style={buttonStyling} 
                 className={classes.OrderButton}
                 disabled={props.disabledOrder}
-                onClick={props.openModal}>order now</button>
+                onClick={props.openModal}>{props.isAuth ?"order now": "sign-up"}</button>
     </div>
 );
 export default buildControls;

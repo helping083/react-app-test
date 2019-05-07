@@ -17,10 +17,11 @@ const tippy = (props) => {
         duration={[250, 175]}
         delay={[150, 0]}
         distance={8}
+        arrow= 'true'
+        trigger='click mouseenter'   
       >
         <button className={classes.buttonClass}>{props.children}</button>
       </Tippy>
     );
 };
-
 export default tippy;

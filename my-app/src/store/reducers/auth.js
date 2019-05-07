@@ -5,7 +5,8 @@ const initialState = {
     token: null,
     userId: null,
     error: null,
-    loading: false
+    loading: false,
+    isSignUp: false
 };
 
 const authStart = ( state, action ) => {
@@ -32,7 +33,9 @@ const authLogout = (state, action) => {
     return updateObject(state, { token: null, userId: null });
 };
 
-
+const isSignUp = (state, action) => {
+    return updateObject(state, {isSignUp: !isSignUp});
+}
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
@@ -40,6 +43,7 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+        case actionTypes.AUTH_SIGN_CHANGE: return isSignUp(state, action);
         default:
             return state;
     }

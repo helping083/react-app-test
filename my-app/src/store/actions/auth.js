@@ -14,6 +14,12 @@ export const authStart = () => {
     };
 };
 
+export const IsAuthSignUp = () => {
+    return {
+        type: actionTypes.AUTH_SIGN_CHANGE
+    }
+}
+
 export const authSucces = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -45,7 +51,8 @@ export const logout = () => {
 }
 
 export const auth = (email, password, isSignUp) => {
-    return dispatch => {
+    
+    return (dispatch, getState) => {
       dispatch(authStart());
       let authData = {
           email: email,
@@ -64,6 +71,7 @@ export const auth = (email, password, isSignUp) => {
             console.log(item.data.expiresIn)
         })
         .catch(error=>{
+            console.log('state after dispatch', getState())
             console.log('error', error);
             dispatch(authFail(error.response.data.error))
         });

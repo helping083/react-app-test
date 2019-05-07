@@ -3,6 +3,7 @@ import Input from '../../components/UI-parts/Input/Input';
 import Spinner from '../../components/UI-parts/Spinner/Spinner';
 import Button from '../../components/UI-parts/Button/Button';
 import classes from './Auth.css';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Tippy from '../../components/UI-parts/tippy/tippy';
 import * as actions from '../../store/actions/index';
@@ -105,9 +106,13 @@ class Auth extends Component {
                 </p>
             )
         }
-
+        let authRedirect = null
+        if (this.props.isAuth) {    
+            authRedirect = <Redirect to='/'/>
+        }
         return (
             <div className={classes.Auth}>
+                {authRedirect}
                 {errorMessage}
                 <form onSubmit={this.submitHandler}>
                       {form}
@@ -117,6 +122,7 @@ class Auth extends Component {
                   clicked={this.switchAuthModeHandler}
                   btnType="Danger"> switch to {this.state.isSignUp ? 'signup': 'signin'}</Button>
                   <Tippy
+                
                     tippyData = {this.state.isSignUp ? 'create a user': 'log-in'}>
                       ?
                   </Tippy>
@@ -128,7 +134,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuth: state.auth.token !==null
     };
 };
 

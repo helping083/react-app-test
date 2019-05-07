@@ -45,7 +45,11 @@ class BurgerBuilder extends Component {
     }
     
     modalHandler = () => {
-        this.setState({isModal: true});
+        if(this.props.isAuth) {
+            this.setState({isModal: true});
+        } else {
+            this.props.history.push('/auth')
+        }
     }
     
     closeModalHandler = () => {
@@ -82,6 +86,7 @@ class BurgerBuilder extends Component {
               </div>
               <BuildControls
                   totalPrice={this.props.price} 
+                  isAuth={this.props.isAuth}
                   addIngredient={this.props.onIngredientAdded}
                   removeIngredient={this.props.onIngredientRemoved}
                   //disabled controls
@@ -120,7 +125,8 @@ const mapStateToProps = state => {
         ing: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
         error: state.burgerBuilder.error,
-        purchased: state.order.purchased
+        purchased: state.order.purchased,
+        isAuth: state.auth.token !==null
     }
 };
 
