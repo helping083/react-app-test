@@ -9,6 +9,7 @@ import OrderSummary from '../Burger.js/OrderSummary/OrderSummary';
 import axios from '../../utils/axios-orders';
 import Spinner from '../UI-parts/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Map from '../UI-parts/google-map/map';
 import * as actions from '../../store/actions/index';
 // import Position from '../UI-parts/Popper/Popper';
 
@@ -26,7 +27,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
-        this.props.onInitIngredients().then(item=>{console.log('world', item)})
+        this.props.onInitIngredients();
         
     }
     isOrderHandler = (ingredients) => {
@@ -116,6 +117,23 @@ class BurgerBuilder extends Component {
                 </Modal>
                {burger}
                {/* <FormikForm/> */}
+              
+               {/* <Map
+                  id="myMap"
+                  options={{
+                    center: { lat: 41.0082, lng: 28.9784 },
+                    zoom: 8
+                  }}
+                  onMapLoad={map => {
+                      console.log(map)
+                    var marker = new window.google.maps.Marker({
+                        position: { lat: 39.0082, lng: 28.9784 },
+                        map: map,
+                        title: 'Hello Istanbul!'
+                    });
+                  }}
+                /> */}
+              
             </Auxialuary>
         );
     }

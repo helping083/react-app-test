@@ -71,6 +71,7 @@ export const fetchOrders = (token) => {
         return (
             axios.get('orders.json?auth=' + token)
             .then((item)=>{
+                console.log(item,'item')
                 const fetchedwithspread = [];
                 for (let key in item.data) {
                     fetchedwithspread.push({
