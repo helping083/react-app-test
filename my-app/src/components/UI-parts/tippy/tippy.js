@@ -7,6 +7,7 @@ import classes from './tippy.css';
 import 'tippy.js/themes/google.css';
 
 const tippy = (props) => {
+    let attachedClasses =  [classes.buttonClass, classes.Anime];
     return (
       <Tippy
         content={props.tippyData}
@@ -20,7 +21,7 @@ const tippy = (props) => {
         arrow= 'true'
         trigger='click mouseenter'   
       >
-        <button className={classes.buttonClass}>{props.children}</button>
+        <button className={attachedClasses.join(' ')}>{props.children}</button>
       </Tippy>
     );
 };

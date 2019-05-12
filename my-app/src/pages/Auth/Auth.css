@@ -9,6 +9,8 @@
     transform: translateY(50%)
 }
 
+
+
 @media(min-width: 600px) {
     .Auth {
       width: 500px;

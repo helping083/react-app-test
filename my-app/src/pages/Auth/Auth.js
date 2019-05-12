@@ -129,7 +129,6 @@ class Auth extends Component {
                   clicked={this.switchAuthModeHandler}
                   btnType="Danger"> switch to {this.state.isSignUp ? 'signup': 'signin'}</Button>
                   <Tippy
-                
                     tippyData = {this.state.isSignUp ? 'create a user': 'log-in'}>
                       ?
                   </Tippy>

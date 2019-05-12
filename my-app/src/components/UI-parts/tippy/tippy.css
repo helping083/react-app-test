@@ -10,7 +10,9 @@
     border-radius: 20px;
     outline: 0;
 }
-
+.Anime {
+    transform: translateY(105px);
+}
 .buttonClass:active {
     outline: 0;
 }

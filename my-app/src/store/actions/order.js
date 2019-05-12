@@ -72,7 +72,6 @@ export const fetchOrders = (token, userId) => {
         return (
             axios.get('orders.json' + queryParams)
             .then((item)=>{
-                console.log(item,'item')
                 const fetchedwithspread = [];
                 for (let key in item.data) {
                     fetchedwithspread.push({

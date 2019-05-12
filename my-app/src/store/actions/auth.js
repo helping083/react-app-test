@@ -43,7 +43,6 @@ export const authFail = (error) => {
 };
 
 export const checkAuthTimeout = (expirationTime) => {
-    console.log('expiration time')
     return dispatch => {
         setTimeout(()=>{
             dispatch(logout());

@@ -39,10 +39,10 @@ class PopperLoader extends Component {
                 poppers.options.onUpdate();
             });
             poppers.options.onUpdate(function(data) {
-                console.log('data',data)
+              
                 _this.setState({data: data});
             });    
-        console.log(poppers); 
+        
     }
     popperShow = () =>{
         this.setState({isShow: true});

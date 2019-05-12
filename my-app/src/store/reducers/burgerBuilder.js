@@ -46,7 +46,6 @@ const reducer = (state = initialState, action) => {
                 building: false
             })
         case actionTypes.CALC_PRICE:
-            console.log('from burger')
             const newPrice = action.ingredients;
             let price = initialState.totalPrice;
             if(newPrice) {
