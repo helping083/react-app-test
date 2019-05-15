@@ -9,6 +9,7 @@ import withErrorHandler from '../../withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
+ 
     state = {
       orderForm: {
         name:  {
@@ -92,6 +93,7 @@ class ContactData extends Component {
       },
       formIsValid: false
     }
+
     // set data to the server
     orderHandler = (event) => {
         event.preventDefault()
