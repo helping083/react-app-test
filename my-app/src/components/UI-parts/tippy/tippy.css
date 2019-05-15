@@ -11,7 +11,7 @@
     outline: 0;
 }
 .Anime {
-    transform: translateY(105px);
+    transform: translateY(0px);
 }
 .buttonClass:active {
     outline: 0;

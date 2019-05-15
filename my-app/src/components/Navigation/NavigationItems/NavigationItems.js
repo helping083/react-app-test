@@ -17,6 +17,7 @@ const navigationItems = (props) => (
                 auth
             </NavigationItem>: <NavigationItem link="/logout">logout</NavigationItem>
         }
+        
     </ul>
 );
 
