@@ -23,7 +23,7 @@ class Checkout extends Component {
        
     }
     
-    focusDiv = ()=>{
+    focusDiv = ()=> {
         ReactDOM.findDOMNode(this.refs.theDiv).focus();
     }
     render() {

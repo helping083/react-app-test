@@ -13,7 +13,9 @@ const initialState =  {
     ingredients: null,
     totalPrice: 6,
     error: false,
-    building: false
+    building: false,
+    id_to_redirect: undefined,
+    todos: []
 }
 
 const reducer = (state = initialState, action) => {

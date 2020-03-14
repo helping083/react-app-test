@@ -61,7 +61,7 @@ const input = (props) => {
               {...props.elementConfig}
               value={props.value}
             />; 
-    }
+    };
 
     return (
       <div className={classes.Input}>
@@ -70,8 +70,8 @@ const input = (props) => {
         {validationError}
       </div>
     );
-}
+};
     
 
 
-export default input
+export default input;

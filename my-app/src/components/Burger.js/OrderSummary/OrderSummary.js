@@ -7,8 +7,6 @@ const spanStyle = {
 }
 
 class OrderSumarry extends Component {
-  
-  
   render() {
     const ingsSum  = Object.keys(this.props.ingredients)
     .map((item)=>{

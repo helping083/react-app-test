@@ -10,19 +10,20 @@ const burger = (props) => {
           .map((i,index) => {
             return <BurgerIngredient key={item+index} type={item}/>
           });
-      }).reduce((prev,curr)=>{
+      })
+      .reduce((prev,curr)=>{
           return prev.concat(curr);
       },[]);
       
       if (transIngredients.length===0) {
           transIngredients = <p>add ingredients</p>
-      }
+      };
 
     return (
         <div className={classes.Burger}>
-        <BurgerIngredient type={'bread-top'}/>
+          <BurgerIngredient type={'bread-top'}/>
             {transIngredients}
-        <BurgerIngredient type={'bread-bottom'}/>
+          <BurgerIngredient type={'bread-bottom'}/>
         </div>
     );
 };
